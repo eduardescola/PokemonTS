@@ -69,8 +69,8 @@ Una aplicación web que muestra una lista de Pokémon usando la API de PokéAPI.
 2. **Filtrar por Tipo**: Haz clic en los botones de los tipos de Pokémon (Fuego, Agua, Planta, etc.) para filtrar la lista.
 3. **Paginación**: Navega entre las páginas de Pokémon usando los botones de "Anterior" y "Siguiente".
 4. **Detalles**: Haz clic en un Pokémon para ver su información detallada, incluyendo su sprite, altura, peso, habilidades y movimientos.
-5. **Añadir Pokémon**: Haz clic en el botón "Añadir Pokémon" para acceder a la página de adición de Pokémon.
-6. **Editar Pokémon**: En la vista de detalles del Pokémon, puedes editar la información del Pokémon mediante el botón "Editar".
+5. **Añadir Pokémon**: Haz clic en el botón "Añadir Pokémon" para acceder a la página de adición de Pokémon. (Gestiónada en el archivo `add.ts`).
+6. **Editar Pokémon**: En la vista de detalles del Pokémon, puedes editar la información del Pokémon mediante el botón "Editar". (Gestiónada en el archivo `edit.ts`).
 7. **Eliminar Pokémon**: Puedes eliminar un Pokémon de la lista mediante el botón "Eliminar".
 
 ## Estructura de Archivos
@@ -80,7 +80,10 @@ Una aplicación web que muestra una lista de Pokémon usando la API de PokéAPI.
 - `edit.html`: Página para editar la información de un Pokémon existente.
 - `pokemon-details.html`: Página con los detalles de un Pokémon.
 - `style.css`: Archivo CSS con los estilos personalizados.
-- `script.ts`: Archivo que que maneja la interacción con la API y la manipulación del DOM.
+- `script.ts`: Archivo que maneja la interacción con la API y la manipulación del DOM (paginación, búsqueda, filtrado).
+- `add.ts`: Archivo TypeScript que gestiona la adición de nuevos Pokémon a la Pokédex.
+- `edit.ts`: Archivo TypeScript que gestiona la edición de los Pokémon existentes en la Pokédex.
+- `details.ts`: Archivo TypeScript que maneja la visualización y gestión de los detalles de cada Pokémon.
 - `tsconfig.json`: Archivo de configuración de TypeScript.
 - `javascript/`: Carpeta que contiene los archivos JavaScript compilados generados a partir de los archivos TypeScript.
 
