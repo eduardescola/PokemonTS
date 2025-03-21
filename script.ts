@@ -35,6 +35,12 @@ const typeStyles: { [key: string]: { color: string; icon: string } } = {
     ground: { color: '#e0c068', icon: 'fas fa-mountain' },
 };
 
+// Agregar un event listener al botón de eliminar cache y actualizar
+const clearCacheBtn = document.getElementById('clear-cache');
+if (clearCacheBtn) {
+    clearCacheBtn.addEventListener('click', clearCacheAndUpdate);
+}
+
 // Función para obtener los Pokémon de la API
 async function fetchPokemons(): Promise<void> {
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000');
@@ -146,21 +152,132 @@ function deletePokemon(id: number): void {
     }
 }
 
-// Función para buscar Pokémon
 function searchPokemons(): void {
     const searchInput = (document.getElementById('search') as HTMLInputElement).value.toLowerCase();
+    const suggestionsContainer = document.getElementById('suggestions') as HTMLDivElement;
     
+    // Limpiar las sugerencias previas
+    suggestionsContainer.innerHTML = '';
+
     if (searchInput === '') {
-        filteredPokemons = [...pokemonData];
-        displayPokemons(filteredPokemons);
+        // Si no hay texto, ocultamos las sugerencias
+        suggestionsContainer.style.display = 'none';
         return;
     }
 
-    filteredPokemons = pokemonData.filter((pokemon) =>
+    // Filtrar los Pokémon que coinciden con la búsqueda
+    const suggestions = pokemonData.filter((pokemon) =>
         pokemon.name.toLowerCase().includes(searchInput)
     );
 
+    // Si hay sugerencias, las mostramos
+    if (suggestions.length > 0) {
+        suggestionsContainer.style.display = 'block'; // Mostrar el contenedor
+        suggestions.forEach((pokemon) => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.classList.add('suggestion-item');
+            suggestionItem.textContent = pokemon.name;
+
+            // Agregar un evento de clic para llenar el input con la sugerencia
+            suggestionItem.addEventListener('click', () => {
+                // Poner el nombre de la sugerencia en el campo de búsqueda
+                (document.getElementById('search') as HTMLInputElement).value = pokemon.name;
+                suggestionsContainer.innerHTML = ''; // Limpiar las sugerencias
+                suggestionsContainer.style.display = 'none'; // Ocultar las sugerencias
+            });
+
+            suggestionsContainer.appendChild(suggestionItem);
+        });
+    } else {
+        suggestionsContainer.style.display = 'none'; // Ocultar las sugerencias si no hay coincidencias
+    }
+    filterPokemons();
+}
+
+// Función para filtrar Pokémon por nombre y tipo
+function filterPokemons() {
+    const searchInput = (document.getElementById('search') as HTMLInputElement).value.toLowerCase();
+    const selectedType = document.querySelector('.type-buttons .nes-btn.selected')?.id || 'all';
+
+    filteredPokemons = pokemonData.filter((pokemon) => {
+        // Filtrar por nombre
+        const nameMatch = pokemon.name.toLowerCase().includes(searchInput);
+
+        // Filtrar por tipo
+        const typeMatch = selectedType === 'all' || pokemon.types.includes(selectedType);
+
+        return nameMatch && typeMatch;
+    });
+
+    // Mostrar los Pokémon filtrados
     displayPokemons(filteredPokemons);
+}
+
+// Función para manejar el cambio de selección de tipo
+function toggleTypeFilter(event: Event) {
+    const button = event.target as HTMLButtonElement;
+    if (button.classList.contains('nes-btn')) {
+        // Alternar la clase "selected" en los botones de tipo
+        document.querySelectorAll('.type-buttons .nes-btn').forEach((btn) => btn.classList.remove('selected'));
+        button.classList.add('selected');
+
+        // Llamar a la función de filtrado después de seleccionar un tipo
+        filterPokemons();
+    }
+}
+
+// Asignar los eventos de click a los botones de tipo
+document.querySelectorAll('.type-buttons .nes-btn').forEach((button) => {
+    button.addEventListener('click', toggleTypeFilter);
+});
+
+// Función para limpiar el localStorage y recargar la página
+function clearCacheAndUpdate() {
+    if (confirm('¿Estás seguro de que deseas eliminar el cache y actualizar la página?')) {
+        localStorage.removeItem('pokemons'); // Limpiar el cache
+        location.reload(); // Recargar la página
+    }
+}
+
+
+function goToPage(): void {
+    const pageInput = document.getElementById('page-input') as HTMLInputElement;
+    const pageNumber = parseInt(pageInput.value.trim(), 10);
+
+    if (isNaN(pageNumber) || pageNumber < 1 || pageNumber > Math.ceil(filteredPokemons.length / perPage)) {
+        alert('Número de página inválido. Ingresa un número de página válido.');
+        return;
+    }
+
+    // Actualizar la página actual
+    currentPage = pageNumber;
+
+    // Mostrar los Pokémon de la página correspondiente
+    displayPokemons(filteredPokemons);
+
+    // Actualizar el texto de la página actual
+    const currentPageElement = document.getElementById('current-page');
+    if (currentPageElement) {
+        currentPageElement.textContent = `Página Actual: ${currentPage}`;
+    }
+
+    // Limpiar el input de la página
+    pageInput.value = '';
+}
+
+// Función para mostrar un Pokémon aleatorio
+function showRandomPokemon(): void {
+    // Verificar que haya Pokémon en la lista filtrada
+    if (filteredPokemons.length === 0) {
+        alert('No hay Pokémon para mostrar. Filtra o carga los Pokémon primero.');
+        return;
+    }
+
+    // Seleccionar un Pokémon aleatorio de la lista filtrada
+    const randomPokemon = filteredPokemons[Math.floor(Math.random() * filteredPokemons.length)];
+
+    // Redirigir a la página de detalles del Pokémon seleccionado
+    window.location.href = `pokemon-details.html?id=${randomPokemon.id}`;
 }
 
 window.onload = async () => {

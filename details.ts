@@ -51,7 +51,7 @@ function displayPokemonDetails(id: number): void {
             <p><strong>ID:</strong> ${pokemon.id}</p>
             <p><strong>Tipos:</strong> ${pokemon.types.join(', ')}</p>
         </div>
-        <button class="back-button" onclick="window.history.back()">Volver</button>
+        <button class="back-button" onclick="window.location.href = 'index.html'">Volver</button>
     `;
 
     pokemonDetailsContainer.appendChild(detailsCard);
