@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <!-- Agregar NES.css -->
+    <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
+    <!-- Agregar FontAwesome para los iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Contenedor de carga (Pokébola girando) -->
+    <div id="loading" class="loading-container">
+       <div class="pokeball"></div>
+    </div>
+    <div class="container">
+        <div id="page-info" class="page-info-container">
+            <span id="current-page" class="current-page">Página Actual: 1</span>
+            <input type="text" id="page-input" class="page-input" placeholder="Ir a..." />
+            <button onclick="goToPage()" class="nes-btn is-primary">Ir</button>
+        </div>
+        <header>
+            <h1>Pokédex</h1>
+            <div class="filters">
+                <!-- Campo de búsqueda -->
+                <input type="text" id="search" placeholder="Buscar Pokémon..." oninput="searchPokemons()">
+                
+                <!-- Contenedor para las sugerencias -->
+                <div id="suggestions" class="suggestions-container"></div>
+                
+                <!-- Filtro por tipo (cajitas) -->
+                <div class="type-buttons">
+                    <button class="nes-btn" id="all" style="background-color: #e0e0e0;">
+                        <i class="fas fa-circle"></i> Todos
+                    </button>
+                    <button class="nes-btn fire" id="fire">
+                        <i class="fas fa-fire"></i> Fuego
+                    </button>
+                    <button class="nes-btn water" id="water">
+                        <i class="fas fa-tint"></i> Agua
+                    </button>
+                    <button class="nes-btn grass" id="grass">
+                        <i class="fas fa-leaf"></i> Planta
+                    </button>
+                    <button class="nes-btn electric" id="electric">
+                        <i class="fas fa-bolt"></i> Eléctrico
+                    </button>
+                    <button class="nes-btn bug" id="bug">
+                        <i class="fas fa-bug"></i> Bicho
+                    </button>
+                    <button class="nes-btn normal" id="normal">
+                        <i class="fas fa-paw"></i> Normal
+                    </button>
+                    <button class="nes-btn poison" id="poison">
+                        <i class="fas fa-skull-crossbones"></i> Veneno
+                    </button>
+                    <button class="nes-btn ice" id="ice">
+                        <i class="fas fa-snowflake"></i> Hielo
+                    </button>
+                    <button class="nes-btn fighting" id="fighting">
+                        <i class="fas fa-dumbbell"></i> Lucha
+                    </button>
+                    <button class="nes-btn flying" id="flying">
+                        <i class="fas fa-fighter-jet"></i> Volador
+                    </button>
+                    <button class="nes-btn psychic" id="psychic">
+                        <i class="fas fa-brain"></i> Psíquico
+                    </button>
+                    <button class="nes-btn rock" id="rock">
+                        <i class="fas fa-gem"></i> Roca
+                    </button>
+                    <button class="nes-btn ghost" id="ghost">
+                        <i class="fas fa-ghost"></i> Fantasma
+                    </button>
+                    <button class="nes-btn dragon" id="dragon">
+                        <i class="fas fa-dragon"></i> Dragón
+                    </button>
+                    <button class="nes-btn steel" id="steel">
+                        <i class="fas fa-cogs"></i> Acero
+                    </button>
+                    <button class="nes-btn fairy" id="fairy">
+                        <i class="fas fa-gem"></i> Hada
+                    </button>
+                    <button class="nes-btn dark" id="dark">
+                        <i class="fas fa-moon"></i> Siniestro
+                    </button>
+                    <button class="nes-btn ground" id="ground">
+                        <i class="fas fa-mountain"></i> Tierra
+                    </button>                    
+                    <!-- Agrega más tipos aquí -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenedor de los Pokémon -->
+        <div class="pokemon-list" id="pokemon-list"></div>
+
+        <!-- Paginación -->
+        <div class="pagination">
+            <button class="nes-btn" id="random-pokemon" onclick="showRandomPokemon()">Pokémon Aleatorio</button>
+            <button class="nes-btn" id="prev" onclick="changePage('prev')">Anterior</button>
+            <button class="nes-btn" id="next" onclick="changePage('next')">Siguiente</button>
+            <a href="add.html" class="nes-btn is-success">Añadir Pokémon</a> <!-- Botón para añadir Pokémon -->
+            <button class="nes-btn is-error" id="clear-cache" onclick="clearCache()">Eliminar Caché y Recargar</button>
+        </div>
+    </div>
+
+    <!-- Script JS -->
+    <script src="javascript/script.js"></script>
+</body>
+</html>
